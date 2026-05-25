@@ -1,4 +1,4 @@
-NextStep - ** A modern online store for sports sneakers. Designed by me in Figma also **
+NextStep - **A modern online store for sports sneakers. Designed by me in Figma also**
 
 ## Stack
 | Frontend                       | Backend & BD                 | Instruments              |
