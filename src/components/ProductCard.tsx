@@ -15,5 +15,5 @@ export default function ProductCard({ product } : { product : Product }) {
       />
       <p>{product.description}</p>
     </div>
-  )
+  )b
 }

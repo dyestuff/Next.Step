@@ -15,7 +15,6 @@ export default function Page() {
       <div className="container mx-auto px-4 flex-1 flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
 
-          {/* Текстовая часть */}
           <div className="text-center lg:text-left">
             <h1 className={`${inter.className} antialiased text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6`}>
               Next Step
@@ -37,7 +36,6 @@ export default function Page() {
             </Link>
           </div>
 
-          {/* Изображение */}
           <div className="relative hidden lg:block">
             <Image
               src="/MainPicture.png"
