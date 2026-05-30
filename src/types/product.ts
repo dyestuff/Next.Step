@@ -6,4 +6,6 @@ export interface Product {
   sizes: number[];
   image: string;
   description: string;
+  isBestseller: boolean;
+  isNew: boolean;
 }

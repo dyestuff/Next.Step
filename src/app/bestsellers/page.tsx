@@ -1,6 +1,7 @@
 import { Bebas_Neue } from 'next/font/google'
-import ProductCard from "@/components/ProductCard";
 const bebas = Bebas_Neue({ subsets: ['latin'], weight: ['400'] })
+import ProductCard from "@/components/ProductCard";
+
 
 export default async function Page() {
   const res = await fetch('https://6a139f366c7db8aac0533714.mockapi.io/api/v1/products')
@@ -11,7 +12,7 @@ export default async function Page() {
   const products = await res.json();
 
   return (
-    <main className="flex flex-col min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black">
+    <main className="flex flex-col bg-linear-to-br from-gray-900 via-gray-800 to-black">
       <div className="text-center lg:text-left mt-30 container mx-auto px-4">
       <h1 className={`${bebas.className} md:text-7xl lg:text-6xl font-bold text-white mb-6` }>Bestsellers</h1>
       <section>

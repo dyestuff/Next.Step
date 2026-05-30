@@ -31,6 +31,7 @@ export default function Header() {
             height={40}
             alt="Логотип NextStep"
             className="object-contain"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </Link>
 

@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased outline-hidden`}
     >
-    <body className="min-h-full flex flex-col overflow-hidden bg-gray-600">
+    <body className="min-h-full flex flex-col bg-gray-600">
     <Header />
     {children}</body>
     </html>
