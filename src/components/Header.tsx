@@ -14,6 +14,7 @@ export default function Header() {
     { href: '/about', label: 'Our Story' },
     { href: '/account', label: 'Personal Account' },
     { href: '/contacts', label: 'Contacts' },
+    { href: '/help', label: 'Help' },
   ];
 
   return (
@@ -35,7 +36,6 @@ export default function Header() {
           />
         </Link>
 
-        {/* Навигация — скрыта на мобильных */}
         <nav className="hidden md:flex">
           <ul className="flex items-center gap-6 text-sm font-medium text-white">
             {navLinks.map((link) => {
@@ -59,7 +59,6 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* Корзина */}
         <Link
           href="/card"
           className="relative rounded-full p-2 hover:bg-white/10 transition-colors"

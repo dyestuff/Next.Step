@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ce0c34f9-e385-4db3-8523-c6eee1aed7eb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/bestsellers/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/bestsellers/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/catalog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/catalog/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/product.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +88,7 @@
     &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
     &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/WebStormProjects/next-step/public&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/WebStormProjects/next-step&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -163,7 +159,8 @@
       <workItem from="1780059563491" duration="5000" />
       <workItem from="1780059624550" duration="17496000" />
       <workItem from="1780092326759" duration="3316000" />
-      <workItem from="1780154788223" duration="5830000" />
+      <workItem from="1780154788223" duration="8045000" />
+      <workItem from="1780176476227" duration="1949000" />
     </task>
     <servers />
   </component>
