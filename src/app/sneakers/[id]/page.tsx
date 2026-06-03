@@ -63,7 +63,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         id: product.id,
         name: product.name,
         brand: product.brand,
-        price: product.price,
+        price: product.price.toString(),
         image: product.image,
         size: selectedSize
       })

@@ -1,26 +1,56 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Eye, EyeOff } from 'lucide-react'
 import { useCartStore } from '@/app/lib/store/cart'
+
+function getStoredA11y(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    return localStorage.getItem('nextstep-a11y') === 'true'
+  } catch {
+    return false
+  }
+}
+
+function setStoredA11y(v: boolean) {
+  try {
+    localStorage.setItem('nextstep-a11y', String(v))
+  } catch {}
+}
 
 export default function Header() {
   const pathname = usePathname()
   const itemCount = useCartStore(state => state.getItemCount())
+  const [a11yActive, setA11yActive] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  useEffect(() => {
+    const stored = getStoredA11y()
+    setA11yActive(stored)
+    document.documentElement.classList.toggle('accessibility-mode', stored)
+  }, [])
+
+  const toggleA11y = useCallback(() => {
+    setA11yActive(prev => {
+      const next = !prev
+      setStoredA11y(next)
+      document.documentElement.classList.toggle('accessibility-mode', next)
+      return next
+    })
+  }, [])
+
   const navLinks = [
     { href: '/catalog', label: 'Catalog' },
     { href: '/bestsellers', label: 'Bestsellers' },
     { href: '/about', label: 'Our Story' },
-    { href: '/account', label: 'Personal Account' },
     { href: '/contacts', label: 'Contacts' },
     { href: '/help', label: 'Help' },
   ]
@@ -43,7 +73,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex">
-          <ul className="flex items-center gap-6 text-sm font-medium text-white">
+          <ul className="flex items-center gap-10 text-sm font-medium text-white tracking-widest">
             {navLinks.map((link) => {
               const isActive = pathname === link.href
 
@@ -66,18 +96,32 @@ export default function Header() {
           </ul>
         </nav>
 
-        <Link
-          href="/cart"
-          className="relative rounded-full p-2 hover:bg-white/10 transition-colors group"
-          aria-label="Перейти в корзину"
-        >
-          <ShoppingCart className="h-6 w-6 text-white group-hover:text-blue-400 transition-colors" />
-          {mounted && itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full animate-in zoom-in-50 duration-200">
-              {itemCount > 9 ? '9+' : itemCount}
-            </span>
-          )}
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleA11y}
+            className={`rounded-full p-2 transition-colors group ${
+              a11yActive
+                ? 'bg-yellow-400 text-black hover:bg-yellow-300'
+                : 'hover:bg-white/10 text-white'
+            }`}
+            aria-label={a11yActive ? 'Выключить режим для слабовидящих' : 'Включить режим для слабовидящих'}
+          >
+            {a11yActive ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+          </button>
+
+          <Link
+            href="/cart"
+            className="relative rounded-full p-2 hover:bg-white/10 transition-colors group"
+            aria-label="Перейти в корзину"
+          >
+            <ShoppingCart className="h-6 w-6 text-white group-hover:text-blue-400 transition-colors" />
+            {mounted && itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full animate-in zoom-in-50 duration-200">
+                {itemCount > 9 ? '9+' : itemCount}
+              </span>
+            )}
+          </Link>
+        </div>
       </div>
     </header>
   )

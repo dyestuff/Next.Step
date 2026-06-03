@@ -93,7 +93,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Мы решили изменить правила игры. Вместо того чтобы работать через
-                  посредников, мы建立了 прямые отношения с Nike, Adidas, New Balance
+                  посредников, мы прямые отношения с Nike, Adidas, New Balance
                   и другими топовыми брендами.
                 </p>
                 <p>
@@ -204,7 +204,3 @@ export default function AboutPage() {
     </main>
   )
 }
-
-const res = await fetch('https://mockapi.io/api/v1/products')
-const products = await res.json()
-

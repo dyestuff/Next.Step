@@ -20,21 +20,21 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   const category = params.category
   const collection = params.collection
 
-  let filtered = products
+  let filtered: any[] = products
 
   if (brand === 'other') {
-    filtered = filtered.filter(p => !MAIN_BRANDS.includes(p.brand))
+    filtered = filtered.filter((p: any) => !MAIN_BRANDS.includes(p.brand))
   } else if (brand) {
-    filtered = filtered.filter(p => p.brand === brand)
+    filtered = filtered.filter((p: any) => p.brand === brand)
   }
   if (category) {
-    filtered = filtered.filter(p => p.category === category)
+    filtered = filtered.filter((p: any) => p.category === category)
   }
   if (collection === "bestsellers") {
-    filtered = filtered.filter(p => p.isBestseller)
+    filtered = filtered.filter((p: any) => p.isBestseller)
   }
   if (collection === "new") {
-    filtered = filtered.filter(p => p.isNew)
+    filtered = filtered.filter((p: any) => p.isNew)
   }
 
   const categories = [
