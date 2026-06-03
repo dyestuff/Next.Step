@@ -4,8 +4,14 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart, Eye, EyeOff } from 'lucide-react'
+import { ShoppingCart, Eye, EyeOff, Languages } from 'lucide-react'
 import { useCartStore } from '@/app/lib/store/cart'
+import { useLocaleStore, getCookieLocale } from '@/lib/i18n/store'
+import { getTranslations, type Locale } from '@/lib/i18n/translations'
+
+interface HeaderProps {
+  initialLocale?: Locale
+}
 
 function getStoredA11y(): boolean {
   if (typeof window === 'undefined') return false
@@ -22,9 +28,10 @@ function setStoredA11y(v: boolean) {
   } catch {}
 }
 
-export default function Header() {
+export default function Header({ initialLocale = 'ru' }: HeaderProps) {
   const pathname = usePathname()
   const itemCount = useCartStore(state => state.getItemCount())
+  const [locale, setLocale] = useState(initialLocale)
   const [a11yActive, setA11yActive] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -33,10 +40,22 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
+    const cookieLocale = getCookieLocale()
+    useLocaleStore.getState().setLocale(cookieLocale)
+    setLocale(cookieLocale)
+  }, [])
+
+  useEffect(() => {
     const stored = getStoredA11y()
     setA11yActive(stored)
     document.documentElement.classList.toggle('accessibility-mode', stored)
   }, [])
+
+  const toggleLocale = useCallback(() => {
+    const next = locale === 'ru' ? 'en' : 'ru'
+    useLocaleStore.getState().setLocale(next)
+    window.location.reload()
+  }, [locale])
 
   const toggleA11y = useCallback(() => {
     setA11yActive(prev => {
@@ -47,12 +66,14 @@ export default function Header() {
     })
   }, [])
 
+  const t = getTranslations(locale)
+
   const navLinks = [
-    { href: '/catalog', label: 'Catalog' },
-    { href: '/bestsellers', label: 'Bestsellers' },
-    { href: '/about', label: 'Our Story' },
-    { href: '/contacts', label: 'Contacts' },
-    { href: '/help', label: 'Help' },
+    { href: '/catalog', label: t('nav.catalog') },
+    { href: '/bestsellers', label: t('nav.bestsellers') },
+    { href: '/about', label: t('nav.about') },
+    { href: '/contacts', label: t('nav.contacts') },
+    { href: '/help', label: t('nav.help') },
   ]
 
   return (
@@ -61,13 +82,13 @@ export default function Header() {
         <Link
           href="/"
           className="flex items-center gap-2 rounded-sm p-2 hover:bg-white/10 transition-colors"
-          aria-label="На главную"
+          aria-label={t('nav.home')}
         >
           <Image
             src="/header_logo_muted.png"
             width={120}
             height={40}
-            alt="Логотип NextStep"
+            alt={t('nav.logoAlt')}
             className="object-contain"
           />
         </Link>
@@ -96,7 +117,16 @@ export default function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <button
+            onClick={toggleLocale}
+            className="rounded-full p-2 hover:bg-white/10 transition-colors text-white"
+            aria-label={t('lang.switch')}
+          >
+            <Languages className="h-5 w-5" />
+            <span className="ml-1 text-xs font-bold uppercase">{locale}</span>
+          </button>
+
           <button
             onClick={toggleA11y}
             className={`rounded-full p-2 transition-colors group ${
@@ -104,7 +134,7 @@ export default function Header() {
                 ? 'bg-yellow-400 text-black hover:bg-yellow-300'
                 : 'hover:bg-white/10 text-white'
             }`}
-            aria-label={a11yActive ? 'Выключить режим для слабовидящих' : 'Включить режим для слабовидящих'}
+            aria-label={a11yActive ? t('a11y.off') : t('a11y.on')}
           >
             {a11yActive ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
@@ -112,7 +142,7 @@ export default function Header() {
           <Link
             href="/cart"
             className="relative rounded-full p-2 hover:bg-white/10 transition-colors group"
-            aria-label="Перейти в корзину"
+            aria-label={t('nav.cart')}
           >
             <ShoppingCart className="h-6 w-6 text-white group-hover:text-blue-400 transition-colors" />
             {mounted && itemCount > 0 && (
