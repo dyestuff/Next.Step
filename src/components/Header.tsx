@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart, Eye, EyeOff, Languages } from 'lucide-react'
+import { ShoppingCart, Eye, EyeOff, Languages, Menu, X } from 'lucide-react'
 import { useCartStore } from '@/app/lib/store/cart'
 import { useLocaleStore, getCookieLocale } from '@/lib/i18n/store'
 import { getTranslations, type Locale } from '@/lib/i18n/translations'
@@ -34,6 +34,7 @@ export default function Header({ initialLocale = 'ru' }: HeaderProps) {
   const [locale, setLocale] = useState(initialLocale)
   const [a11yActive, setA11yActive] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -139,6 +140,14 @@ export default function Header({ initialLocale = 'ru' }: HeaderProps) {
             {a11yActive ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
 
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden rounded-full p-2 hover:bg-white/10 transition-colors text-white"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+
           <Link
             href="/cart"
             className="relative rounded-full p-2 hover:bg-white/10 transition-colors group"
@@ -153,6 +162,33 @@ export default function Header({ initialLocale = 'ru' }: HeaderProps) {
           </Link>
         </div>
       </div>
+
+      {mobileOpen && (
+        <div className="md:hidden bg-gray-900/95 backdrop-blur-md border-t border-white/10">
+          <nav className="container mx-auto px-4 py-4">
+            <ul className="flex flex-col gap-2">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`block px-4 py-3 rounded-xl text-sm font-medium tracking-widest transition-colors ${
+                        isActive
+                          ? 'text-blue-400 bg-blue-600/10'
+                          : 'text-white hover:bg-white/10'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

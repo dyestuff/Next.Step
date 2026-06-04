@@ -28,7 +28,7 @@ export default async function Page() {
     <main className="flex flex-col bg-linear-to-br from-gray-900 via-gray-800 to-black">
 
       <section
-        className="relative min-h-[85vh] flex items-center justify-center"
+        className="relative min-h-[70vh] md:min-h-[85vh] flex items-center justify-center"
         style={{
           backgroundImage: `url(/MainBgPic.png)`,
           backgroundSize: 'cover',
