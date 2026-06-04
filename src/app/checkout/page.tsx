@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCartStore } from '@/app/lib/store/cart'
+import { useOrderStore } from '@/app/lib/store/orders'
 import { useTranslations } from '@/lib/i18n/useTranslations'
 import {
   ArrowLeft, ShoppingCart, Truck, ShieldCheck,
@@ -42,6 +43,7 @@ export default function CheckoutPage() {
   const items = useCartStore(state => state.items)
   const getTotalPrice = useCartStore(state => state.getTotalPrice)
   const clearCart = useCartStore(state => state.clearCart)
+  const addOrder = useOrderStore(state => state.addOrder)
 
   const [form, setForm] = useState<FormData>(initialForm)
   const [consent, setConsent] = useState(false)
@@ -85,6 +87,13 @@ export default function CheckoutPage() {
     }
     const id = `NS-${Date.now().toString(36).toUpperCase()}`
     setOrderId(id)
+    addOrder({
+      id,
+      items: items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity, size: i.size, image: i.image })),
+      total,
+      shipping: { firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, country: form.country, city: form.city, address: form.address, zip: form.zip, notes: form.notes },
+      createdAt: new Date().toISOString(),
+    })
     setSubmitted(true)
     clearCart()
   }
