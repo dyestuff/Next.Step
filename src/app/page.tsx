@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
 import Link from "next/link";
-import Image from "next/image";
 import type { Product } from "@/types/product";
 import ProductCard from "@/components/ProductCard";
 import { Truck, Shield, RotateCcw, ArrowRight } from "lucide-react";
@@ -28,35 +27,32 @@ export default async function Page() {
   return (
     <main className="flex flex-col bg-linear-to-br from-gray-900 via-gray-800 to-black">
 
-      <section className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-24 md:py-32">
-          <div className="text-center lg:text-left">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6">
-              Next Step
-            </h1>
-            <p className={`${playfair.className} text-gray-200 text-xl md:text-2xl mb-8`}>
-              {t('hero.tagline')}
-            </p>
-            <p className="text-gray-300 text-lg mb-10 max-w-lg mx-auto lg:mx-0">
-              {t('hero.subtitle')}
-            </p>
-            <Link
-              href="/catalog"
-              className="inline-block px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl text-lg"
-            >
-              {t('hero.cta')}
-            </Link>
-          </div>
-          <div className="relative hidden lg:block">
-            <Image
-              src="/MainPicture.png"
-              width={600}
-              height={600}
-              alt="Main picture"
-              className="object-contain drop-shadow-2xl"
-              priority
-            />
-          </div>
+      <section
+        className="relative min-h-[85vh] flex items-center justify-center"
+        style={{
+          backgroundImage: `url(/MainBgPic.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-900/80" />
+        <div className="relative z-10 text-center px-4 py-24 md:py-32 max-w-3xl">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6">
+            Next Step
+          </h1>
+          <p className={`${playfair.className} text-gray-200 text-xl md:text-2xl mb-6`}>
+            {t('hero.tagline')}
+          </p>
+          <p className="text-gray-300 text-lg mb-10 max-w-lg mx-auto">
+            {t('hero.subtitle')}
+          </p>
+          <Link
+            href="/catalog"
+            className="inline-block px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl text-lg"
+          >
+            {t('hero.cta')}
+          </Link>
         </div>
       </section>
 
