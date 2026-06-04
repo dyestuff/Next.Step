@@ -1,12 +1,14 @@
 import { Bebas_Neue } from 'next/font/google'
 import ProductCard from "@/components/ProductCard"
 import Link from "next/link"
+import { getServerTranslations } from "@/lib/i18n/server"
 
 const bebas = Bebas_Neue({ subsets: ['latin'], weight: ['400'] })
 
 const MAIN_BRANDS = ['Nike', 'Adidas', 'New Balance']
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string }> }) {
+  const { t } = await getServerTranslations()
   const res = await fetch('https://6a139f366c7db8aac0533714.mockapi.io/api/v1/products')
 
   if (!res.ok) {
@@ -38,22 +40,22 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   }
 
   const categories = [
-    { value: 'running', label: 'Для бега' },
-    { value: 'basketball', label: 'Для баскетбола' },
-    { value: 'training', label: 'Для тренировок' },
-    { value: 'casual', label: 'Повседневные' },
+    { value: 'running', label: t('catalog.filter.category.running') },
+    { value: 'basketball', label: t('catalog.filter.category.basketball') },
+    { value: 'training', label: t('catalog.filter.category.training') },
+    { value: 'casual', label: t('catalog.filter.category.casual') },
   ]
 
   const brands = [
     { value: 'Nike', label: 'Nike' },
     { value: 'Adidas', label: 'Adidas' },
     { value: 'New Balance', label: 'New Balance' },
-    { value: 'other', label: 'Другие' },
+    { value: 'other', label: t('catalog.filter.brand.other') },
   ]
 
   const collections = [
-    { value: 'new', label: 'Новинки' },
-    { value: 'bestsellers', label: 'Лидеры продаж' },
+    { value: 'new', label: t('catalog.filter.collection.new') },
+    { value: 'bestsellers', label: t('catalog.filter.collection.bestsellers') },
   ]
 
   const activeFiltersCount = [brand, category, collection].filter(Boolean).length
@@ -62,25 +64,25 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     <main className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <div className="container mx-auto px-4 py-12">
         <h1 className={`${bebas.className} text-5xl md:text-7xl font-bold text-white mb-8`}>
-          CATALOG
+          {t('catalog.title')}
         </h1>
 
         {activeFiltersCount > 0 && (
           <div className="mb-6 flex items-center gap-4">
             <span className="text-gray-400 text-sm">
-              Активные фильтры: {activeFiltersCount}
+              {t('catalog.filter.active')} {activeFiltersCount}
             </span>
             <Link
               href="/catalog"
               className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
             >
-              Сбросить все
+              {t('catalog.filter.reset')}
             </Link>
           </div>
         )}
 
         <div className="mb-10">
-          <h3 className="text-white font-semibold mb-3">По назначению</h3>
+          <h3 className="text-white font-semibold mb-3">{t('catalog.filter.category')}</h3>
           <div className="flex flex-wrap gap-2">
             {categories.map(cat => {
               const isActive = category === cat.value
@@ -103,7 +105,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
         </div>
 
         <div className="mb-10">
-          <h3 className="text-white font-semibold mb-3">По бренду</h3>
+          <h3 className="text-white font-semibold mb-3">{t('catalog.filter.brand')}</h3>
           <div className="flex flex-wrap gap-2">
             {brands.map(brandItem => {
               const isActive = brand === brandItem.value
@@ -126,7 +128,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
         </div>
 
         <div className="mb-10">
-          <h3 className="text-white font-semibold mb-3">Коллекции</h3>
+          <h3 className="text-white font-semibold mb-3">{t('catalog.filter.collection')}</h3>
           <div className="flex flex-wrap gap-2">
             {collections.map(coll => {
               const isActive = collection === coll.value
@@ -157,12 +159,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-gray-400 text-lg mb-4">Товары не найдены</p>
+              <p className="text-gray-400 text-lg mb-4">{t('catalog.empty')}</p>
               <Link
                 href="/catalog"
                 className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
               >
-                Показать все товары
+                {t('catalog.empty.link')}
               </Link>
             </div>
           )}

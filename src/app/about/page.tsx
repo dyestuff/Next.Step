@@ -1,37 +1,40 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Target, Award, Users, Globe, TrendingUp, Heart } from 'lucide-react'
+import { getServerTranslations } from "@/lib/i18n/server"
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { t } = await getServerTranslations()
+
   const stats = [
-    { icon: Users, value: '50,000+', label: 'Довольных клиентов' },
-    { icon: Award, value: '150+', label: 'Брендов' },
-    { icon: Globe, value: '25', label: 'Стран доставки' },
-    { icon: TrendingUp, value: '8 лет', label: 'На рынке' },
+    { icon: Users, value: '50,000+', label: t('about.stats.clients') },
+    { icon: Award, value: '150+', label: t('about.stats.brands') },
+    { icon: Globe, value: '25', label: t('about.stats.countries') },
+    { icon: TrendingUp, value: '8 лет', label: t('about.stats.years') },
   ]
 
   const values = [
     {
       icon: Target,
-      title: 'Качество превыше всего',
-      description: 'Мы работаем только с официальными поставщиками и гарантируем 100% подлинность каждой пары.',
+      title: t('about.values.quality.title'),
+      description: t('about.values.quality.desc'),
     },
     {
       icon: Heart,
-      title: 'Забота о клиентах',
-      description: 'Наша команда экспертов поможет подобрать идеальную пару и ответит на все вопросы.',
+      title: t('about.values.care.title'),
+      description: t('about.values.care.desc'),
     },
     {
       icon: Award,
-      title: 'Лучшие цены',
-      description: 'Прямые контракты с производителями позволяют нам держать конкурентные цены.',
+      title: t('about.values.price.title'),
+      description: t('about.values.price.desc'),
     },
   ]
 
   const team = [
-    { name: 'Александр Петров', role: 'Основатель и CEO', image: '/team/ceo.jpg' },
-    { name: 'Мария Иванова', role: 'Head of Buying', image: '/team/buyer.jpg' },
-    { name: 'Дмитрий Соколов', role: 'Технический директор', image: '/team/cto.jpg' },
+    { name: 'Александр Петров', role: t('about.team.ceo'), image: '/team/ceo.jpg' },
+    { name: 'Мария Иванова', role: t('about.team.buyer'), image: '/team/buyer.jpg' },
+    { name: 'Дмитрий Соколов', role: t('about.team.cto'), image: '/team/cto.jpg' },
   ]
 
   return (
@@ -39,24 +42,23 @@ export default function AboutPage() {
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            Наша история
+            {t('about.hero.title')}
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-8">
-            Мы создали NextStep, чтобы сделать покупку качественных кроссовок
-            простой, удобной и надёжной
+            {t('about.hero.subtitle')}
           </p>
           <div className="flex justify-center gap-4">
             <Link
               href="/catalog"
               className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg shadow-blue-600/30"
             >
-              Смотреть каталог
+              {t('about.hero.catalog')}
             </Link>
             <Link
               href="/contacts"
               className="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-xl font-semibold transition-all border border-white/20"
             >
-              Связаться с нами
+              {t('about.hero.contact')}
             </Link>
           </div>
         </div>
@@ -83,29 +85,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                От идеи до лидера рынка
+                {t('about.story.title')}
               </h2>
               <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
-                <p>
-                  Всё началось в 2016 году, когда основатель NextStep Александр Петров
-                  столкнулся с проблемой: на рынке было сложно найти оригинальные
-                  кроссовки по адекватной цене.
-                </p>
-                <p>
-                  Мы решили изменить правила игры. Вместо того чтобы работать через
-                  посредников, мы прямые отношения с Nike, Adidas, New Balance
-                  и другими топовыми брендами.
-                </p>
-                <p>
-                  Сегодня NextStep — это не просто магазин. Это сообщество любителей
-                  качественной обуви, которые ценят комфорт, стиль и подлинность.
-                </p>
+                <p>{t('about.story.p1')}</p>
+                <p>{t('about.story.p2')}</p>
+                <p>{t('about.story.p3')}</p>
               </div>
             </div>
             <div className="relative aspect-square bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-2xl overflow-hidden">
               <Image
                 src="/about-story.jpg"
-                alt="Наша история"
+                alt={t('about.hero.title')}
                 fill
                 className="object-cover"
               />
@@ -114,7 +105,7 @@ export default function AboutPage() {
 
           <div className="mb-20">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-              Наши ценности
+              {t('about.values.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {values.map((value, index) => (
@@ -138,12 +129,9 @@ export default function AboutPage() {
 
       <section className="py-20 bg-gradient-to-r from-blue-900/30 to-purple-900/30">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">Наша миссия</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8">{t('about.mission.title')}</h2>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            "Мы верим, что правильная обувь меняет жизнь. Наша цель — сделать
-            премиальные кроссовки доступными для каждого, кто ценит качество,
-            комфорт и стиль. Каждая пара, которую мы продаём — это результат
-            тщательного отбора и любви к своему делу."
+            &ldquo;{t('about.mission.text')}&rdquo;
           </p>
           <div className="mt-8 flex justify-center">
             <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
@@ -154,7 +142,7 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            Команда NextStep
+            {t('about.team.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {team.map((member, index) => (
@@ -173,7 +161,7 @@ export default function AboutPage() {
             ))}
           </div>
           <p className="text-center text-gray-500 mt-8 text-sm">
-            * Фотографии команды скоро появятся
+            {t('about.team.photoNote')}
           </p>
         </div>
       </section>
@@ -182,20 +170,19 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Присоединяйтесь к NextStep
+              {t('about.cta.title')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Подпишитесь на рассылку и получите скидку 10% на первый заказ,
-              а также доступ к эксклюзивным коллекциям
+              {t('about.cta.desc')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Ваш email"
+                placeholder={t('about.cta.placeholder')}
                 className="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50"
               />
               <button className="bg-white text-blue-600 px-8 py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors">
-                Подписаться
+                {t('about.cta.subscribe')}
               </button>
             </div>
           </div>
@@ -204,3 +191,4 @@ export default function AboutPage() {
     </main>
   )
 }
+

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingCart, Check, AlertCircle, ChevronDown, ChevronUp, HelpCircle, Ruler, Truck, Shield, RotateCcw } from 'lucide-react'
 import { useCartStore } from '@/app/lib/store/cart'
+import { useTranslations } from '@/lib/i18n/useTranslations'
 import type { Product } from '@/types/product'
 
 const SIZE_CHART = [
@@ -19,10 +20,10 @@ const SIZE_CHART = [
 ]
 
 const CATEGORY_LABELS: Record<string, string> = {
-  running: 'Беговые',
-  casual: 'Повседневные',
-  training: 'Тренировочные',
-  basketball: 'Баскетбольные',
+  running: 'Running',
+  casual: 'Lifestyle',
+  training: 'Training',
+  basketball: 'Basketball',
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -33,6 +34,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const [showSizeChart, setShowSizeChart] = useState(false)
   const [cartStatus, setCartStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
+  const { t } = useTranslations()
   const addItem = useCartStore(state => state.addItem)
 
   useEffect(() => {
@@ -84,9 +86,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   if (!product) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center text-center px-4">
-        <h2 className="text-3xl font-bold text-white mb-4">Товар не найден</h2>
+        <h2 className="text-3xl font-bold text-white mb-4">{t('product.notFound')}</h2>
         <Link href="/catalog" className="text-blue-400 hover:text-blue-300 transition-colors">
-          Вернуться в каталог
+          {t('product.back')}
         </Link>
       </div>
     )
@@ -102,7 +104,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          Назад в каталог
+          {t('product.back')}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
@@ -125,7 +127,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               )}
               {product.isBestseller && (
                 <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                  ХИТ ПРОДАЖ
+                  {t('product.bestseller')}
                 </span>
               )}
             </div>
@@ -147,13 +149,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-white font-semibold">Выберите размер:</h3>
+                <h3 className="text-white font-semibold">{t('product.selectSize')}</h3>
                 <button
                   onClick={() => setShowSizeChart(!showSizeChart)}
                   className="flex items-center gap-1 text-sm text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   <Ruler className="w-4 h-4" />
-                  Таблица размеров
+                  {t('product.sizeGuide')}
                   {showSizeChart ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
               </div>
@@ -177,7 +179,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               {cartStatus === 'error' && (
                 <p className="text-red-400 text-sm flex items-center gap-2 mt-2 animate-pulse">
                   <AlertCircle className="w-4 h-4" />
-                  Пожалуйста, выберите размер
+                  {t('product.sizeError')}
                 </p>
               )}
             </div>
@@ -205,7 +207,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   </tbody>
                 </table>
                 <p className="text-xs text-gray-500 mt-3 italic">
-                  * Измерьте стопу от пятки до кончика большого пальца. Если значение между размерами, берите больший.
+                  * {t('help.size.note')}
                 </p>
               </div>
             )}
@@ -222,12 +224,12 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               {cartStatus === 'success' ? (
                 <>
                   <Check className="w-6 h-6" />
-                  Добавлено в корзину
+                  {t('product.added')}
                 </>
               ) : (
                 <>
                   <ShoppingCart className="w-6 h-6" />
-                  Добавить в корзину
+                  {t('product.addToCart')}
                 </>
               )}
             </button>
@@ -235,15 +237,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             <div className="mt-8 grid grid-cols-3 gap-4">
               <div className="text-center p-3 bg-white/5 rounded-lg border border-white/10">
                 <Truck className="w-5 h-5 text-blue-400 mx-auto mb-1" />
-                <p className="text-xs text-gray-400">Доставка 1-3 дня</p>
+                <p className="text-xs text-gray-400">{t('product.delivery')}</p>
               </div>
               <div className="text-center p-3 bg-white/5 rounded-lg border border-white/10">
                 <Shield className="w-5 h-5 text-blue-400 mx-auto mb-1" />
-                <p className="text-xs text-gray-400">Оригинал 100%</p>
+                <p className="text-xs text-gray-400">{t('product.authentic')}</p>
               </div>
               <div className="text-center p-3 bg-white/5 rounded-lg border border-white/10">
                 <RotateCcw className="w-5 h-5 text-blue-400 mx-auto mb-1" />
-                <p className="text-xs text-gray-400">Возврат 14 дней</p>
+                <p className="text-xs text-gray-400">{t('product.returns')}</p>
               </div>
             </div>
           </div>
@@ -252,29 +254,29 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         <div className="border-t border-white/10 pt-8 mt-8">
           <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
             <HelpCircle className="w-5 h-5 text-blue-400" />
-            Нужна помощь?
+            {t('product.help.title')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link
               href="/help#size-guide"
               className="block p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-blue-500/50 transition-all group"
             >
-              <p className="text-gray-300 group-hover:text-white font-medium">Как определить свой размер?</p>
-              <p className="text-sm text-gray-500 mt-1">Подробная инструкция и таблица соответствия</p>
+              <p className="text-gray-300 group-hover:text-white font-medium">{t('product.help.size')}</p>
+              <p className="text-sm text-gray-500 mt-1">{t('product.help.sizeDesc')}</p>
             </Link>
             <Link
               href="/help#running-guide"
               className="block p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-blue-500/50 transition-all group"
             >
-              <p className="text-gray-300 group-hover:text-white font-medium">Как выбрать кроссовки для бега?</p>
-              <p className="text-sm text-gray-500 mt-1">Гид по пронации, покрытию и дистанциям</p>
+              <p className="text-gray-300 group-hover:text-white font-medium">{t('product.help.running')}</p>
+              <p className="text-sm text-gray-500 mt-1">{t('product.help.runningDesc')}</p>
             </Link>
             <Link
               href="/help"
               className="block p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-blue-500/50 transition-all group"
             >
-              <p className="text-gray-300 group-hover:text-white font-medium">Все разделы помощи</p>
-              <p className="text-sm text-gray-500 mt-1">Визуальный гид, отзывы и поддержка</p>
+              <p className="text-gray-300 group-hover:text-white font-medium">{t('product.help.all')}</p>
+              <p className="text-sm text-gray-500 mt-1">{t('product.help.allDesc')}</p>
             </Link>
           </div>
         </div>
