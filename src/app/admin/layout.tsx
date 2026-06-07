@@ -21,14 +21,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { data: session, status } = useSession()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [ready, setReady] = useState(false)
+  const isLoginPage = pathname === '/admin/login'
 
   useEffect(() => {
+    if (isLoginPage) return
     if (status === 'unauthenticated') {
       router.replace('/admin/login')
     } else if (status === 'authenticated') {
       setReady(true)
     }
-  }, [status, router])
+  }, [status, router, isLoginPage])
+
+  if (isLoginPage) return <>{children}</>
 
   if (status === 'loading' || !ready) return null
 

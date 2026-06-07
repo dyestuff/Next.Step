@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex items-center justify-center px-4">
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex items-center justify-center px-4 pt-24">
       <div className="w-full max-w-sm">
         <Link href="/" className="block text-center mb-8 text-3xl font-bold">
           <span className="text-white">Next</span>
