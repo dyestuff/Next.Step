@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import "../globals.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import SessionProvider from "../components/SessionProvider";
 import type { Locale } from "@/lib/i18n/translations";
 
 const geistSans = Geist({
@@ -31,9 +32,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased outline-hidden`}
     >
     <body className="min-h-full flex flex-col bg-gray-600">
-    <Header initialLocale={locale} />
-    {children}
-    <Footer /></body>
+    <SessionProvider>
+      <Header initialLocale={locale} />
+      {children}
+      <Footer />
+    </SessionProvider></body>
     </html>
   );
 }

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart, Eye, EyeOff, Languages, Menu, X } from 'lucide-react'
+import { ShoppingCart, Eye, EyeOff, Languages, Menu, X, Shield } from 'lucide-react'
 import { useCartStore } from '@/app/lib/store/cart'
 import { useLocaleStore, getCookieLocale } from '@/lib/i18n/store'
 import { getTranslations, type Locale } from '@/lib/i18n/translations'
@@ -139,6 +139,14 @@ export default function Header({ initialLocale = 'ru' }: HeaderProps) {
           >
             {a11yActive ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
+
+          <Link
+            href="/admin/login"
+            className="rounded-full p-2 hover:bg-white/10 transition-colors text-white"
+            aria-label="Admin"
+          >
+            <Shield className="h-5 w-5" />
+          </Link>
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}

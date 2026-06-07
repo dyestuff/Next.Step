@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 import { useRouter, usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   LayoutDashboard, ShoppingBag, Package, ArrowLeftFromLine,
@@ -17,37 +18,26 @@ const NAV = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
-  const [authed, setAuthed] = useState(false)
-  const [checking, setChecking] = useState(true)
+  const { data: session, status } = useSession()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('admin_auth')
-    if (stored !== 'true') {
+    if (status === 'unauthenticated') {
       router.replace('/admin/login')
-    } else {
-      setAuthed(true)
+    } else if (status === 'authenticated') {
+      setReady(true)
     }
-    setChecking(false)
-  }, [router])
+  }, [status, router])
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_auth')
-    router.push('/admin/login')
-  }
-
-  if (checking) return null
-
-  if (!authed) return null
+  if (status === 'loading' || !ready) return null
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex">
-      {/* Mobile backdrop */}
       {mobileOpen && (
         <div className="fixed inset-0 bg-black/60 z-30 md:hidden" onClick={() => setMobileOpen(false)} />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed md:sticky top-0 left-0 h-screen w-64 bg-gray-900 border-r border-white/10 z-40 flex flex-col transition-transform duration-200 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -96,7 +86,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Back to Site
           </Link>
           <button
-            onClick={handleLogout}
+            onClick={() => signOut({ callbackUrl: '/admin/login' })}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -107,9 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main */}
       <div className="flex-1 min-w-0">
-        {/* Mobile top bar */}
         <div className="sticky top-0 z-20 bg-gray-950 border-b border-white/10 p-4 flex items-center gap-3 md:hidden">
           <button onClick={() => setMobileOpen(true)} className="text-gray-400">
             <Menu className="w-5 h-5" />

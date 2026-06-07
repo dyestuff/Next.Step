@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Package, ShoppingBag, TrendingUp, ArrowUpRight, ExternalLink } from 'lucide-react'
+import { Package, ShoppingBag, TrendingUp, ArrowUpRight, ExternalLink, Calendar, DollarSign, Star } from 'lucide-react'
 import { useOrderStore } from '@/app/lib/store/orders'
 
 const API = 'https://6a139f366c7db8aac0533714.mockapi.io/api/v1/products'
@@ -24,6 +24,30 @@ export default function AdminDashboard() {
       .finally(() => setLoading(false))
   }, [])
 
+  const analytics = useMemo(() => {
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const weekStart = new Date(todayStart)
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay())
+
+    const today = orders.filter(o => new Date(o.createdAt) >= todayStart)
+    const thisWeek = orders.filter(o => new Date(o.createdAt) >= weekStart)
+    const avgOrder = orders.length > 0
+      ? orders.reduce((s, o) => s + o.total, 0) / orders.length
+      : 0
+
+    const freq: Record<string, { name: string; count: number; image: string }> = {}
+    for (const order of orders) {
+      for (const item of order.items) {
+        if (!freq[item.id]) freq[item.id] = { name: item.name, count: 0, image: item.image }
+        freq[item.id].count += item.quantity
+      }
+    }
+    const popular = Object.values(freq).sort((a, b) => b.count - a.count).slice(0, 5)
+
+    return { today: today.length, thisWeek: thisWeek.length, avgOrder, popular }
+  }, [orders])
+
   const stats = [
     {
       icon: Package, label: 'Total Products', value: loading ? '…' : products.length,
@@ -41,6 +65,12 @@ export default function AdminDashboard() {
       color: 'text-violet-400', bg: 'bg-violet-600/10',
       link: '/admin/orders'
     },
+  ]
+
+  const miniStats = [
+    { icon: Calendar, label: 'Today', value: analytics.today, color: 'text-yellow-400' },
+    { icon: Calendar, label: 'This Week', value: analytics.thisWeek, color: 'text-orange-400' },
+    { icon: DollarSign, label: 'Avg Order', value: `$${analytics.avgOrder.toFixed(2)}`, color: 'text-emerald-400' },
   ]
 
   return (
@@ -63,8 +93,51 @@ export default function AdminDashboard() {
         ))}
       </div>
 
+      {/* Order Analytics Row */}
+      {orders.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {miniStats.map(({ icon: Icon, label, value, color }) => (
+              <div key={label}
+                className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-4"
+              >
+                <div className={`w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center ${color}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider">{label}</p>
+                  <p className="text-xl font-bold">{value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Popular Products */}
+          {analytics.popular.length > 0 && (
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Star className="w-4 h-4 text-yellow-400" />
+                <h2 className="font-bold text-lg">Popular Products</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                {analytics.popular.map((item, i) => (
+                  <div key={i} className="bg-white/5 rounded-xl p-3 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/10 rounded-lg overflow-hidden shrink-0">
+                      <img src={item.image} alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{item.name}</p>
+                      <p className="text-xs text-gray-400">{item.count} sold</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Orders */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-lg">Recent Orders</h2>
@@ -89,7 +162,6 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        {/* Products Quick List */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-lg">Products</h2>
