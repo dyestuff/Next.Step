@@ -55,12 +55,12 @@ export default function AdminOrdersPage() {
                     <span className="text-xs text-gray-500 hidden sm:block">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </span>
-                    <button
+                    <span
                       onClick={e => { e.stopPropagation(); setSelectedOrder(order) }}
-                      className="text-blue-400 text-xs hover:underline shrink-0"
+                      className="text-blue-400 text-xs hover:underline shrink-0 cursor-pointer"
                     >
                       Details
-                    </button>
+                    </span>
                     {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                   </div>
                 </button>
