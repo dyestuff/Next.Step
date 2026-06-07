@@ -160,9 +160,6 @@ export default async function AboutPage() {
               </div>
             ))}
           </div>
-          <p className="text-center text-gray-500 mt-8 text-sm">
-            {t('about.team.photoNote')}
-          </p>
         </div>
       </section>
 

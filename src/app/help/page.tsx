@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Star, Ruler, HelpCircle, Info } from 'lucide-react';
 import { getServerTranslations } from "@/lib/i18n/server";
@@ -41,16 +42,24 @@ export default async function HelpPage() {
 
         <section id="visual-guide" className="mb-24 scroll-mt-24">
           <h2 className="text-3xl font-bold mb-8 border-b border-gray-700 pb-4">{t('help.visual.title')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold text-blue-400 mb-2">{t('help.visual.running.title')}</h3>
-              <p className="text-gray-300 mb-4">{t('help.visual.running.desc')}</p>
-              <div className="h-32 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">[Фото беговой подошвы]</div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-gray-800 p-6 rounded-xl flex flex-col md:flex-row md:items-start md:gap-6">
+              <div className="md:w-1/2 mb-4 md:mb-0">
+                <h3 className="text-xl font-semibold text-blue-400 mb-2">{t('help.visual.running.title')}</h3>
+                <p className="text-gray-300">{t('help.visual.running.desc')}</p>
+              </div>
+              <div className="relative w-full md:w-1/2 h-56 bg-gray-700 rounded-lg overflow-hidden">
+                <Image src="/podoshva.webp" alt="Running shoe sole" fill className="object-contain p-2" />
+              </div>
             </div>
-            <div className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold text-orange-400 mb-2">{t('help.visual.training.title')}</h3>
-              <p className="text-gray-300 mb-4">{t('help.visual.training.desc')}</p>
-              <div className="h-32 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">[Фото тренировочной подошвы]</div>
+            <div className="bg-gray-800 p-6 rounded-xl flex flex-col md:flex-row md:items-start md:gap-6">
+              <div className="md:w-1/2 mb-4 md:mb-0">
+                <h3 className="text-xl font-semibold text-orange-400 mb-2">{t('help.visual.training.title')}</h3>
+                <p className="text-gray-300">{t('help.visual.training.desc')}</p>
+              </div>
+              <div className="relative w-full md:w-1/2 h-56 bg-gray-700 rounded-lg overflow-hidden">
+                <Image src="/training.jpg" alt="Training shoe sole" fill className="object-contain p-2" />
+              </div>
             </div>
           </div>
         </section>

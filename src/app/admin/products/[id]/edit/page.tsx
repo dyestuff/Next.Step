@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Save } from 'lucide-react'
+import { useTranslations } from '@/lib/i18n/useTranslations'
 
 const API = 'https://6a139f366c7db8aac0533714.mockapi.io/api/v1/products'
 const CATEGORIES = ['training', 'running', 'lifestyle', 'basketball', 'soccer']
@@ -17,6 +18,7 @@ interface ProductData {
 export default function AdminEditProductPage() {
   const router = useRouter()
   const { id } = useParams<{ id: string }>()
+  const { t } = useTranslations()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [notFound, setNotFound] = useState(false)
@@ -72,8 +74,8 @@ export default function AdminEditProductPage() {
 
   const currentSizes = form.sizes.split(',').map(s => s.trim()).filter(Boolean)
 
-  if (loading) return <div className="p-8 text-gray-500">Loading…</div>
-  if (notFound) return <div className="p-8 text-gray-500">Product not found.</div>
+  if (loading) return <div className="p-8 text-gray-500">{t('admin.productForm.loading')}</div>
+  if (notFound) return <div className="p-8 text-gray-500">{t('admin.productForm.notFound')}</div>
 
   return (
     <div className="p-4 md:p-8 max-w-2xl space-y-6">
@@ -81,16 +83,16 @@ export default function AdminEditProductPage() {
         <Link href="/admin/products" className="p-2 hover:bg-white/10 rounded-lg text-gray-400 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <h1 className="text-2xl md:text-3xl font-bold">Edit Product</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">{t('admin.productForm.edit')}</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <Field label="Name" value={form.name} onChange={v => set('name', v)} required />
-          <Field label="Brand" value={form.brand} onChange={v => set('brand', v)} required />
-          <Field label="Price ($)" type="number" step="0.01" value={form.price} onChange={v => set('price', v)} required />
+          <Field label={t('admin.productForm.name')} value={form.name} onChange={v => set('name', v)} required />
+          <Field label={t('admin.productForm.brand')} value={form.brand} onChange={v => set('brand', v)} required />
+          <Field label={t('admin.productForm.price')} type="number" step="0.01" value={form.price} onChange={v => set('price', v)} required />
           <div>
-            <label className="block text-xs text-gray-400 mb-1.5 font-medium">Category</label>
+            <label className="block text-xs text-gray-400 mb-1.5 font-medium">{t('admin.productForm.category')}</label>
             <select
               value={form.category}
               onChange={e => set('category', e.target.value)}
@@ -101,10 +103,10 @@ export default function AdminEditProductPage() {
           </div>
         </div>
 
-        <Field label="Image URL" value={form.image} onChange={v => set('image', v)} />
+        <Field label={t('admin.productForm.imageUrl')} value={form.image} onChange={v => set('image', v)} />
 
         <div>
-          <label className="block text-xs text-gray-400 mb-1.5 font-medium">Description</label>
+          <label className="block text-xs text-gray-400 mb-1.5 font-medium">{t('admin.productForm.description')}</label>
           <textarea
             value={form.description}
             onChange={e => set('description', e.target.value)}
@@ -114,7 +116,7 @@ export default function AdminEditProductPage() {
         </div>
 
         <div>
-          <label className="block text-xs text-gray-400 mb-1.5 font-medium">Sizes</label>
+          <label className="block text-xs text-gray-400 mb-1.5 font-medium">{t('admin.productForm.sizes')}</label>
           <div className="flex flex-wrap gap-2">
             {SIZES_PRESETS.map(size => {
               const active = currentSizes.includes(size)
@@ -137,13 +139,13 @@ export default function AdminEditProductPage() {
         </div>
 
         <div className="flex items-center justify-between pt-2">
-          <Link href="/admin/products" className="text-sm text-gray-400 hover:underline">Cancel</Link>
+          <Link href="/admin/products" className="text-sm text-gray-400 hover:underline">{t('admin.productForm.cancel')}</Link>
           <button
             type="submit"
             disabled={saving}
             className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 font-bold px-6 py-2.5 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
           >
-            <Save className="w-4 h-4" /> {saving ? 'Saving…' : 'Save Changes'}
+            <Save className="w-4 h-4" /> {saving ? t('admin.productForm.saving') : t('admin.productForm.save')}
           </button>
         </div>
       </form>

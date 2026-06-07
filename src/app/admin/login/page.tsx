@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Lock, ArrowRight } from 'lucide-react'
+import { useTranslations } from '@/lib/i18n/useTranslations'
 
 export default function AdminLoginPage() {
   const router = useRouter()
+  const { t } = useTranslations()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -17,7 +19,7 @@ export default function AdminLoginPage() {
     setError('')
 
     if (!username || !password) {
-      setError('Please enter username and password')
+      setError(t('admin.login.error.empty'))
       return
     }
 
@@ -28,7 +30,7 @@ export default function AdminLoginPage() {
     })
 
     if (result?.error) {
-      setError('Invalid credentials')
+      setError(t('admin.login.error.invalid'))
     } else {
       router.push('/admin')
     }
@@ -40,7 +42,7 @@ export default function AdminLoginPage() {
         <Link href="/" className="block text-center mb-8 text-3xl font-bold">
           <span className="text-white">Next</span>
           <span className="text-blue-400">Step</span>
-          <span className="block text-xs text-gray-500 font-normal mt-1">Admin Panel</span>
+          <span className="block text-xs text-gray-500 font-normal mt-1">{t('admin.login.panel')}</span>
         </Link>
 
         <form onSubmit={handleSubmit} className="bg-white/5 p-8 rounded-2xl border border-white/10 space-y-5">
@@ -50,10 +52,10 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          <h1 className="text-xl font-bold text-center">Sign In</h1>
+          <h1 className="text-xl font-bold text-center">{t('admin.login.signIn')}</h1>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1.5 font-medium">Username</label>
+            <label className="block text-xs text-gray-400 mb-1.5 font-medium">{t('admin.login.username')}</label>
             <input
               type="text"
               value={username}
@@ -64,7 +66,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1.5 font-medium">Password</label>
+            <label className="block text-xs text-gray-400 mb-1.5 font-medium">{t('admin.login.password')}</label>
             <input
               type="password"
               value={password}
@@ -82,7 +84,7 @@ export default function AdminLoginPage() {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 font-bold py-3 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           >
-            Sign In <ArrowRight className="w-4 h-4" />
+            {t('admin.login.signIn')} <ArrowRight className="w-4 h-4" />
           </button>
         </form>
       </div>

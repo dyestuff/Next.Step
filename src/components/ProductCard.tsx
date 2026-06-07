@@ -35,16 +35,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        <div className="p-4">
-          <h3 className="text-gray-900 font-bold text-lg mb-1 group-hover:text-blue-600 transition-colors">
+        <div className="p-3 md:p-4">
+          <h3 className="text-gray-900 font-bold text-sm md:text-lg leading-tight mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
             {product.name}
           </h3>
 
-          <p className="text-gray-600 text-sm mb-2">
-            {product.brand} · {categoryText}
+          <p className="text-gray-600 text-xs md:text-sm mb-1 md:mb-2">
+            {product.brand}
           </p>
 
-          <p className="text-gray-900 font-semibold text-xl">
+          <p className="text-gray-900 font-semibold text-base md:text-xl">
             ${product.price}
           </p>
         </div>

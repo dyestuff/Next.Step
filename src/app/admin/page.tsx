@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Package, ShoppingBag, TrendingUp, ArrowUpRight, ExternalLink, Calendar, DollarSign, Star } from 'lucide-react'
 import { useOrderStore } from '@/app/lib/store/orders'
+import { useTranslations } from '@/lib/i18n/useTranslations'
 
 const API = 'https://6a139f366c7db8aac0533714.mockapi.io/api/v1/products'
 
@@ -12,6 +13,7 @@ interface Product {
 }
 
 export default function AdminDashboard() {
+  const { t } = useTranslations()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const orders = useOrderStore(s => s.orders)
@@ -50,17 +52,17 @@ export default function AdminDashboard() {
 
   const stats = [
     {
-      icon: Package, label: 'Total Products', value: loading ? '…' : products.length,
+      icon: Package, label: t('admin.dashboard.totalProducts'), value: loading ? '…' : products.length,
       color: 'text-blue-400', bg: 'bg-blue-600/10',
       link: '/admin/products'
     },
     {
-      icon: ShoppingBag, label: 'Total Orders', value: orders.length,
+      icon: ShoppingBag, label: t('admin.dashboard.totalOrders'), value: orders.length,
       color: 'text-emerald-400', bg: 'bg-emerald-600/10',
       link: '/admin/orders'
     },
     {
-      icon: TrendingUp, label: 'Revenue',
+      icon: TrendingUp, label: t('admin.dashboard.revenue'),
       value: `$${orders.reduce((s, o) => s + o.total, 0).toFixed(2)}`,
       color: 'text-violet-400', bg: 'bg-violet-600/10',
       link: '/admin/orders'
@@ -68,14 +70,14 @@ export default function AdminDashboard() {
   ]
 
   const miniStats = [
-    { icon: Calendar, label: 'Today', value: analytics.today, color: 'text-yellow-400' },
-    { icon: Calendar, label: 'This Week', value: analytics.thisWeek, color: 'text-orange-400' },
-    { icon: DollarSign, label: 'Avg Order', value: `$${analytics.avgOrder.toFixed(2)}`, color: 'text-emerald-400' },
+    { icon: Calendar, label: t('admin.dashboard.today'), value: analytics.today, color: 'text-yellow-400' },
+    { icon: Calendar, label: t('admin.dashboard.thisWeek'), value: analytics.thisWeek, color: 'text-orange-400' },
+    { icon: DollarSign, label: t('admin.dashboard.avgOrder'), value: `$${analytics.avgOrder.toFixed(2)}`, color: 'text-emerald-400' },
   ]
 
   return (
     <div className="p-4 md:p-8 space-y-8">
-      <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+      <h1 className="text-2xl md:text-3xl font-bold">{t('admin.dashboard.title')}</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {stats.map(({ icon: Icon, label, value, color, bg, link }) => (
@@ -93,7 +95,6 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Order Analytics Row */}
       {orders.length > 0 && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -112,12 +113,11 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          {/* Popular Products */}
           {analytics.popular.length > 0 && (
             <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Star className="w-4 h-4 text-yellow-400" />
-                <h2 className="font-bold text-lg">Popular Products</h2>
+                <h2 className="font-bold text-lg">{t('admin.dashboard.popular')}</h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 {analytics.popular.map((item, i) => (
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{item.name}</p>
-                      <p className="text-xs text-gray-400">{item.count} sold</p>
+                      <p className="text-xs text-gray-400">{item.count} {t('admin.dashboard.sold')}</p>
                     </div>
                   </div>
                 ))}
@@ -140,13 +140,13 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-lg">Recent Orders</h2>
+            <h2 className="font-bold text-lg">{t('admin.dashboard.recentOrders')}</h2>
             <Link href="/admin/orders" className="text-blue-400 text-xs hover:underline flex items-center gap-1">
-              View All <ArrowUpRight className="w-3 h-3" />
+              {t('admin.dashboard.viewAll')} <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
           {orders.length === 0 ? (
-            <p className="text-gray-500 text-sm">No orders yet.</p>
+            <p className="text-gray-500 text-sm">{t('admin.dashboard.noOrders')}</p>
           ) : (
             <div className="space-y-2">
               {orders.slice(-5).reverse().map(order => (
@@ -164,13 +164,13 @@ export default function AdminDashboard() {
 
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-lg">Products</h2>
+            <h2 className="font-bold text-lg">{t('admin.dashboard.products')}</h2>
             <Link href="/admin/products/new" className="text-blue-400 text-xs hover:underline flex items-center gap-1">
-              Add New <ExternalLink className="w-3 h-3" />
+              {t('admin.dashboard.addNew')} <ExternalLink className="w-3 h-3" />
             </Link>
           </div>
           {loading ? (
-            <p className="text-gray-500 text-sm">Loading…</p>
+            <p className="text-gray-500 text-sm">{t('admin.dashboard.loading')}</p>
           ) : (
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {products.slice(0, 10).map(p => (
