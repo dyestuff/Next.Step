@@ -317,6 +317,16 @@ export const translations: Record<Locale, Record<string, string>> = {
     'about.cta.desc': 'Подпишитесь на рассылку и получите скидку 10% на первый заказ, а также доступ к эксклюзивным коллекциям',
     'about.cta.subscribe': 'Подписаться',
     'about.cta.placeholder': 'Ваш email',
+
+    // Error boundaries
+    'error.title': 'Что-то пошло не так',
+    'error.desc': 'Произошла непредвиденная ошибка. Попробуйте обновить страницу.',
+    'error.retry': 'Попробовать снова',
+    'error.back': 'На главную',
+    'notFound.title': 'Страница не найдена',
+    'notFound.desc': 'Возможно, она была удалена или вы перешли по неверной ссылке.',
+    'notFound.back': 'Вернуться на главную',
+    'loading.skeleton': 'Загрузка…',
   },
   en: {
     // Header nav
@@ -634,6 +644,16 @@ export const translations: Record<Locale, Record<string, string>> = {
     'about.cta.desc': 'Subscribe to our newsletter and get 10% off your first order, plus access to exclusive collections',
     'about.cta.subscribe': 'Subscribe',
     'about.cta.placeholder': 'Your email',
+
+    // Error boundaries
+    'error.title': 'Something went wrong',
+    'error.desc': 'An unexpected error occurred. Please try refreshing the page.',
+    'error.retry': 'Try again',
+    'error.back': 'Go home',
+    'notFound.title': 'Page not found',
+    'notFound.desc': 'It may have been removed or the link may be broken.',
+    'notFound.back': 'Back to home',
+    'loading.skeleton': 'Loading…',
   },
 }
 
